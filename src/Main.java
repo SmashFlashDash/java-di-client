@@ -17,15 +17,13 @@ public class Main {
     private DatagramSocket socket;
     private Thread runnerThread;
     private boolean running;
-
     private final byte[] buf = new byte[256];
-    private final ByteBuffer frameBuf = ByteBuffer.allocate(26*2).order(ByteOrder.LITTLE_ENDIAN);
-    byte[] sycnho = ByteBuffer.allocate(4).order(ByteOrder.LITTLE_ENDIAN).putInt(0x12345678).array();
+    private final ByteBuffer frameBuf = ByteBuffer.allocate(26 * 2).order(ByteOrder.LITTLE_ENDIAN);
 
     public static void main(String[] args) {
         Main main = new Main();
         try {
-            main.listenSocket(1500);
+            main.listenSocket(15000);
         } catch (SocketException e) {
             e.printStackTrace();
             System.exit(0);
@@ -55,39 +53,58 @@ public class Main {
                     socket.close();
                 }
             }
+//            byte[] s = {(byte) 11, (byte) 11, (byte) 11, (byte) 11, (byte) 11, (byte) 11, (byte) 11, (byte) 11, (byte) 11, (byte) 11,
+//                    (byte) 11, (byte) 11, (byte) 11, (byte) 11, (byte) 11, (byte) 11, (byte) 11, (byte) 11, (byte) 11, (byte) 11,
+//                    (byte) 11, (byte) 120, (byte) 86, (byte) 52, (byte) 18};
+//
+//            byte[] dat = s;
+//            byte[] dat2 = Arrays.copyOfRange(s, 0, packet.getLength());
+//            System.out.println("FromSocke\t" + bytesToHex(dat, 0, dat.length));
+//            System.out.println("ArrayCopy\t" + bytesToHex(dat2, 0, dat2.length));
+//            frameBuf.put(Arrays.copyOfRange(s, 0, packet.getLength()));
+
+            byte[] dat = packet.getData();
+            byte[] dat2 = Arrays.copyOfRange(packet.getData(), 0, packet.getLength());
+//            System.out.println("FromSocke\t" + bytesToHex(dat, 0, dat.length));
+            System.out.println("ToBuffer\t" + bytesToHex(dat2,0, dat2.length));
 
             frameBuf.put(Arrays.copyOfRange(packet.getData(), 0, packet.getLength()));
+//            byteBuffer.array()
+//            byte[] www = new byte [frameBuf.remaining()];
+//            frameBuf.get(www, 0, frameBuf.capacity());
+            System.out.println("Buffer\t\t" + bytesToHex(frameBuf.array(), 0, frameBuf.capacity()));
             frameBuf.flip();
             if (!synched) {
                 byte[] refSyncho = new byte[4];
                 for (int i = 0; i < frameBuf.limit() - refSyncho.length + 1; i++) {
                     frameBuf.get(refSyncho, 0, refSyncho.length);
                     frameBuf.position(frameBuf.position() - refSyncho.length + 1);
-                    if (PackageSin.isValidSycnho(refSyncho)) {
-                        System.out.println("Синронизация");
-                        frameBuf.position(frameBuf.position() - 1);
-                        synched = true;
-                        break;
-                    }
+//                    if (PackageSin.validateSynch(refSyncho)) {
+//                        frameBuf.position(frameBuf.position() - 1);
+//                        synched = true;
+//                        System.out.println("Синронизация");
+//                        System.out.println("CutBefor\t" + bytesToHex(frameBuf.array(), frameBuf.position(), frameBuf.remaining()));
+//                        break;
+//                    }
                 }
             }
-
             if (synched && frameBuf.remaining() >= 26) {
                 byte[] bytes = new byte[26];
                 frameBuf.get(bytes);
-                System.out.println(bytesToHex(bytes, 0, bytes.length));
+                System.out.println("Frame\t\t" + bytesToHex(bytes, 0, bytes.length));
                 PackageSin w = null;
                 try {
                     w = new PackageSin(bytes);
                 } catch (Exception e) {
-                    synched = false;
+//                    synched = false;
                     e.printStackTrace();
                 }
-                if (w != null) {
-                    System.out.println(w);
-                }
+//                if (w != null) {
+//                    System.out.println(w);
+//                }
             }
             frameBuf.compact();
+            System.out.println();
         }
     }
 }
@@ -98,9 +115,7 @@ public class Main {
 
 
 
-
-
-class App extends JFrame{
+class Apps extends JFrame{
     private InetAddress address;
     private Timer fillTimer, sendTimer;
     private final byte[] buf = new byte[256];
@@ -111,7 +126,7 @@ class App extends JFrame{
     private boolean running;
     private Thread runnerThread;
 
-    public App(Integer port){
+    public Apps(Integer port){
         setTitle("Get TLM");
         setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
         setBounds(0, 0, 500, 500);

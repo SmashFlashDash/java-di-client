@@ -6,38 +6,59 @@ import vniiem.TimeManipulation;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.time.LocalDateTime;
-import java.time.ZoneOffset;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 // TODO: описываем структуру данных и шлем сюда
 public class PackageSin {
     private static final int PACKET_LENGTH = 26;
     private static final int SYNCH = 0x12345678;
-    private static final byte[] sycnho = ByteBuffer.allocate(4).order(ByteOrder.LITTLE_ENDIAN).putInt(0x12345678).array();
     private final Integer counter;
     private final LocalDateTime localDateTime;
     private final Double angleSin;
-    private final Short crc16;  // unsigned short
+    private final short crc16;
+    private boolean haveErrors;
 
 
-    public PackageSin(byte[] dataBytes) throws Exception{
+    public PackageSin(byte[] dataBytes) {
+        haveErrors = dataBytes.length != PACKET_LENGTH;
+
         ByteBuffer data = ByteBuffer.wrap(dataBytes).order(ByteOrder.LITTLE_ENDIAN);
-        int synch = data.getInt(0);
+        int synch = data.getInt(0);                 // & 0xffffffffL
         counter = data.getInt(4);
         localDateTime = TimeManipulation.getDateTimeFromUnixUTC(data.getDouble(8));
         angleSin = data.getDouble(16);
-        crc16 = data.getShort(data.limit() - 2);
-        if (data.limit() != PACKET_LENGTH) {
-            throw new Exception("Ошибка в размере пакета");
-        } else if ( synch != SYNCH){
-            throw new Exception(String.format("Ошибка cинхромаркере: %x", synch) );
-        } else if (crc16 != CRC16_CCITT.crc16Ccitt(data, 0, data.limit() - 2)){
-            throw new Exception(String.format("Ошибка CRC16: %s - %s", crc16, CRC16_CCITT.crc16Ccitt(data, 0, data.limit() - 2)));
+        crc16 = data.getShort(data.limit() - 2);   // & 0xffff
+
+        validateField(synch, SYNCH);
+        validateField(CRC16_CCITT.crc16Ccitt(data, 0, data.limit() - 2), crc16);
+    }
+
+    public PackageSin(Integer counter, LocalDateTime localDateTime, Double angleSin, short crc16) {
+        this.counter = counter;
+        this.localDateTime = localDateTime;
+        this.angleSin = angleSin;
+        this.crc16 = crc16;
+    }
+
+    public void validateField(int val, int ref){
+        if (val != ref && !haveErrors) {
+            haveErrors = true;
+        }
+    }
+    public void validateField(short val, short ref){
+        if (val != ref && !haveErrors) {
+            haveErrors = true;
         }
     }
 
-    public static boolean isValidSycnho(byte [] ref){
-        return Arrays.equals(ref, sycnho);
+    public static boolean validateSynch(ByteBuffer ref, int pos){
+        return ref.getInt(pos) == SYNCH;
+    }
+
+    public boolean isHaveErrors() {
+        return haveErrors;
     }
 
     public Integer getCounter() {
@@ -52,7 +73,7 @@ public class PackageSin {
         return angleSin;
     }
 
-    public Short getCrc16() {
+    public int getCrc16() {
         return crc16;
     }
 

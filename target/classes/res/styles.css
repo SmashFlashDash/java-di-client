@@ -1,0 +1,67 @@
+/*.root{*/
+/*    -fx-background-color:rgb(186,153,122,0.7);*/
+/*    -fx-background-radius:30;*/
+/*}*/
+
+/*.table-view{*/
+/*    -fx-border-color: transparent;*/
+/*}*/
+
+/*.table-view:focused {*/
+/*    outline: none;*/
+/*}*/
+
+.root {
+    -fx-base: rgba(60, 60, 60, 255);
+}
+
+.table-view{
+    -fx-background-color: transparent;
+}
+
+.label{
+    -fx-background-color: transparent;
+}
+
+.statusBar {
+    -fx-background-color: rgba(80, 80, 80, 255);
+}
+/*.table-view:focused{*/
+/*    -fx-background-color: green;*/
+/*}*/
+
+/*.table-view .column-header-background{*/
+/*    -fx-background-color: #262626;*/
+/*}*/
+
+/*.table-view .column-header-background .label{*/
+/*    -fx-background-color: transparent;*/
+/*    -fx-text-fill: #0ed9e0;*/
+/*}*/
+
+/*.table-view .column-header {*/
+/*    -fx-background-color: transparent;*/
+/*}*/
+
+/*.table-view .table-cell{*/
+/*    -fx-text-fill: #0ed9e0;*/
+/*    -fx-alignment: center;*/
+/*}*/
+
+/*.table-row-cell{*/
+/*    -fx-background-color: -fx-table-cell-border-color, #2b2a2a;*/
+/*    -fx-background-insets: 0, 0 0 1 0;*/
+/*    -fx-padding: 0.0em; !* 0 *!*/
+/*}*/
+
+/*.table-row-cell:odd{*/
+/*    -fx-background-color: -fx-table-cell-border-color, #262626;*/
+/*    -fx-background-insets: 0, 0 0 1 0;*/
+/*    -fx-padding: 0.0em; !* 0 *!*/
+/*}*/
+
+/*.table-row-cell:selected {*/
+/*    -fx-background-color: #005797;*/
+/*    -fx-background-insets: 0;*/
+/*    -fx-background-radius: 1;*/
+/*}*/
