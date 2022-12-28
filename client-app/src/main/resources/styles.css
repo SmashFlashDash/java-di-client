@@ -1,0 +1,44 @@
+/*.root{*/
+/*    -fx-background-color:rgb(186,153,122,0.7);*/
+/*    -fx-background-radius:30;*/
+/*}*/
+
+/*.table-view{*/
+/*    -fx-border-color: transparent;*/
+/*}*/
+
+/*.table-view:focused {*/
+/*    outline: none;*/
+/*}*/
+
+.root {
+    -fx-base: rgba(60, 60, 60, 255);
+}
+
+.table-view{
+    -fx-background-color: transparent;
+}
+
+.label{
+    -fx-background-color: transparent;
+}
+
+.statusBar {
+    -fx-background-color: rgba(80, 80, 80, 255);
+}
+
+.table-view .table-cell{
+    -fx-alignment: center;
+}
+
+.table-row-cell:filled:errors {
+    -fx-background-color: rgba(150, 4, 45, 0.1);
+}
+
+.table-row-cell:filled:errors .table-cell {
+    -fx-text-fill: red;
+}
+
+.table-view .filler {
+    -fx-border-insets: 10 /* Enter value depending on thickness;*/
+}
