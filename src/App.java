@@ -150,17 +150,15 @@ public class App extends Application {
         hBoxStatusBar.setPadding(new Insets(0,0,0,10));
         hBoxStatusBar.getChildren().add(statusBar);
         hBoxStatusBar.getStyleClass().add("statusBar");
-
+        // main panel
         VBox vBox = new VBox();
         vBox.setPadding(Insets.EMPTY);
         vBox.getChildren().addAll(table, hBox, hBoxStatusBar);
-        vBox.getChildren().forEach(child -> VBox.setVgrow(child, Priority.ALWAYS));
-        vBox.setFillWidth(true);
-//        VBox.setVgrow(table, Priority.ALWAYS);
+        VBox.setVgrow(table, Priority.ALWAYS);
 
         // transparentStage надо делать кнопки закрывания
-//        scene.setFill(Color.TRANSPARENT);
-//        window.initStyle(StageStyle.TRANSPARENT);
+        // scene.setFill(Color.TRANSPARENT);
+        // window.initStyle(StageStyle.TRANSPARENT);
 
         Scene scene = new Scene(vBox);
         scene.getStylesheets().add("res/styles.css");
