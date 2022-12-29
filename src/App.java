@@ -1,25 +1,16 @@
-import com.sun.javafx.tk.FontMetrics;
-import com.sun.javafx.tk.Toolkit;
 import data.PackageSin;
 import javafx.application.Application;
-import javafx.beans.value.ObservableValue;
-import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
-import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
-import javafx.scene.text.Text;
-import javafx.scene.text.TextBoundsType;
 import javafx.stage.Stage;
-import javafx.stage.StageStyle;
 
 import java.io.IOException;
 import java.net.DatagramPacket;
@@ -27,10 +18,7 @@ import java.net.DatagramSocket;
 import java.net.SocketException;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
-import java.time.LocalDateTime;
 import java.util.Arrays;
-
-import static vniiem.TLMServer.bytesToHex;
 
 public class App extends Application {
     Stage window;
@@ -38,8 +26,10 @@ public class App extends Application {
     TextField inputPort;
     Button startButton, stoptButton, dropButton;
     Label statusBar;
-    Thread listenUDP;
-    Boolean runningListenUDP;
+    Thread threadListenUDP;
+    Boolean runningListenUDP = false;
+    Thread threadStatusBar;
+    Boolean runningStatusBar = false;
     private DatagramSocket socket;
     private final byte[] buf = new byte[256];
     private final ByteBuffer frameBuf = ByteBuffer.allocate(26 * 2).order(ByteOrder.LITTLE_ENDIAN);
@@ -79,11 +69,28 @@ public class App extends Application {
         crc16Column.setCellValueFactory(new PropertyValueFactory<>("crc16"));
 
 
+
         // table
         table = new TableView<>();
 //        table.setItems(getPacages());
         table.getColumns().addAll(idColumn, dateColumn, angleSinColumn, crc16Column);
         tableList = table.getItems();
+        table.setRowFactory(tv -> new TableRow<PackageSin>() {
+            @Override
+            protected void updateItem(PackageSin packageSin, boolean empty) {
+                super.updateItem(packageSin, empty);
+                if (packageSin != null && packageSin.isHaveErrors())
+                    setStyle("-fx-background-color: red;");
+                else {
+                    setStyle("");
+                }
+            }
+        });
+//        if (packageSin.isHaveErrors()) {
+//            setStyle("-fx-background-color: #baffba;");
+//        } else {
+//            setStyle("");
+//        }
 
         // изменить цвет строки
 //        table.setRowFactory(tv -> new TableRow<CustomItem>() {
@@ -145,7 +152,7 @@ public class App extends Application {
         hBox.setAlignment(Pos.CENTER_LEFT);
         hBox.getChildren().addAll(lblPort, inputPort, startButton, stoptButton, dropButton);
         // statusBar
-        statusBar = new Label("statusBar");
+        statusBar = new Label("Готово");
         HBox hBoxStatusBar = new HBox();
         hBoxStatusBar.setPadding(new Insets(0,0,0,10));
         hBoxStatusBar.getChildren().add(statusBar);
@@ -175,13 +182,35 @@ public class App extends Application {
     //  подсвечивать строку красным
     //
     private void statusBarError(String text){
+        if (runningStatusBar){
+            return;
+        }
         statusBar.setText(text);
         statusBar.setStyle("-fx-text-fill:  red;");
     }
 
     private void statusBarInfo(String text){
+        if (runningStatusBar){
+            threadStatusBar.interrupt();
+        }
         statusBar.setText(text);
-        statusBar.setStyle("-fx-text-fill: rgba(250, 250, 250, 255)");
+        statusBar.setStyle("");
+    }
+    private void statusBatInfoDisplayTime(String text, int mills){
+        runningStatusBar = true;
+        threadStatusBar = new Thread(()->{
+            statusBar.setText(text);
+            statusBar.setStyle("");
+            try {
+                Thread.sleep(mills);
+
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            runningStatusBar = false;
+            statusBarInfo("Готово");
+        });
+        threadStatusBar.start();
     }
 
     private void listenPort() {
@@ -193,16 +222,18 @@ public class App extends Application {
             statusBarError("Port должен быть цифрой");
             return;
         }
+        inputPort.setDisable(true);
         try {
             socket = new DatagramSocket(port);
         } catch (SocketException e) {
             statusBarError("Port недоступен");
             return;
         }
-        listenUDP = new Thread(this::_listenPort);
-        listenUDP.setName("listenUDP");
+        threadListenUDP = new Thread(this::_listenPort);
+        threadListenUDP.setName("listenUDP");
         runningListenUDP = true;
-        listenUDP.start();
+        threadListenUDP.start();
+        statusBarInfo("Прием пакетов");
     }
 
     private void _listenPort() {
@@ -252,28 +283,28 @@ public class App extends Application {
         }
     }
 
-    //TODO: остановить прослушку порта
-    //  разрешить изменить надпись порт
     private void stopPort() {
-        System.out.println("Clicked");
-        socket.close();
-    }
-
-    private void _stopPort() {
+        if (runningListenUDP){
+            statusBatInfoDisplayTime("Остановка приема", 1000);
+            runningListenUDP = false;
+            try {
+                threadListenUDP.join();
+            } catch (InterruptedException e){
+                e.printStackTrace();
+            }
+            socket.close();
+            inputPort.setDisable(false);
+        }
     }
 
     // TODO: очитить поля в таблице и сбросить лейблы ошибок и принято пакетов
     private void dropTable() {
         System.out.println("Clicked");
+        statusBatInfoDisplayTime("Очистка таблицы", 1000);
+        tableList.clear();
+
     }
 
 
-    public ObservableList<PackageSin> getPacages(){
-        ObservableList<PackageSin> packages = FXCollections.observableArrayList();
-        packages.add(new PackageSin(0, LocalDateTime.now(), 11d, (short) 11));
-        packages.add(new PackageSin(1, LocalDateTime.now(), 22d, (short) 11));
-        packages.add(new PackageSin(1, LocalDateTime.now(), 88d, (short) 88));
-        packages.add(new PackageSin(1, LocalDateTime.now(), 111d, (short) 11));
-        return packages;
-    }
+
 }
