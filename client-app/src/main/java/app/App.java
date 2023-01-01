@@ -152,6 +152,7 @@ public class App extends Application {
         runningListenUDP = true;
         threadListenUDP.start();
         statusBarSetText("Прием данных", "");
+        inputPort.setDisable(true);
     }
 
     private void _listenPort() {
@@ -205,6 +206,7 @@ public class App extends Application {
             }
         }
         statusBarSetText("Прием данных остановлен", "");
+        inputPort.setDisable(false);
     }
 
     private void dropTable() {
