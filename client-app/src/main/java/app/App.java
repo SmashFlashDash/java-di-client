@@ -1,8 +1,12 @@
 package app;
 
 import javafx.application.Application;
+import javafx.application.Platform;
+import javafx.beans.property.ObjectProperty;
 import javafx.collections.ObservableList;
 import javafx.css.PseudoClass;
+import javafx.event.Event;
+import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -11,6 +15,7 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.*;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
 
 import java.io.IOException;
 import java.net.DatagramPacket;
@@ -105,8 +110,15 @@ public class App extends Application {
         vBox.getChildren().addAll(table, hBox, hBoxStatusBar);
         VBox.setVgrow(table, Priority.ALWAYS);
 
+
         Scene scene = new Scene(vBox);
         scene.getStylesheets().add("styles.css");
+        window.onCloseRequestProperty().setValue(e -> {
+            System.out.println("Whataaaa");
+            if (runningListenUDP){
+                stopPort();
+            }
+        });
         window.setScene(scene);
         window.show();
     }
@@ -136,6 +148,7 @@ public class App extends Application {
         }
         threadListenUDP = new Thread(this::_listenPort);
         threadListenUDP.setName("listenUDP");
+        threadListenUDP.setDaemon(true);
         runningListenUDP = true;
         threadListenUDP.start();
         statusBarSetText("Прием данных", "");
