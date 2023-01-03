@@ -7,14 +7,15 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <module name="vniiem" />
+        <module name="examples" />
         <module name="client-app" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
       <module name="client-app" target="11" />
-      <module name="interview-vniiem-java" target="11" />
-      <module name="javafx-sample" target="11" />
+      <module name="examples" target="11" />
       <module name="vniiem" target="11" />
+      <module name="vniiem-java-test" target="11" />
     </bytecodeTargetLevel>
   </component>
 </project>

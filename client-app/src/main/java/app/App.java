@@ -1,21 +1,31 @@
 package app;
 
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
 import javafx.application.Application;
 import javafx.application.Platform;
-import javafx.beans.property.ObjectProperty;
+import javafx.beans.property.SimpleObjectProperty;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.StringProperty;
 import javafx.collections.ObservableList;
 import javafx.css.PseudoClass;
-import javafx.event.Event;
+import javafx.css.SimpleStyleableStringProperty;
+import javafx.css.StyleableProperty;
+import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.layout.*;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.Priority;
+import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
+import javafx.scene.paint.Paint;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
-import javafx.stage.WindowEvent;
+import javafx.util.Duration;
 
 import java.io.IOException;
 import java.net.DatagramPacket;
@@ -23,14 +33,18 @@ import java.net.DatagramSocket;
 import java.net.SocketException;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
+import java.nio.file.Path;
 import java.util.Arrays;
+import java.util.Queue;
+import java.util.concurrent.ConcurrentLinkedDeque;
+import java.util.concurrent.ConcurrentLinkedQueue;
 
 public class App extends Application {
     Stage window;
     TableView<PackageSin> table;
     TextField inputPort;
     Button startButton, stoptButton, dropButton;
-    Label statusBar;
+    StatusBarLabel statusBar;
     Thread threadListenUDP;
     Boolean runningListenUDP = false;
     private DatagramSocket socket;
@@ -98,12 +112,13 @@ public class App extends Application {
         hBox.setAlignment(Pos.CENTER_LEFT);
         hBox.getChildren().addAll(lblPort, inputPort, startButton, stoptButton, dropButton);
         // statusBar
-        statusBar = new Label("statusBar");
-        statusBarSetText("Готово", "");
+        statusBar = new StatusBarLabel();
+        statusBar.updateStatus("Готово", statusBar.getColorDefault());
         HBox hBoxStatusBar = new HBox();
         hBoxStatusBar.setPadding(new Insets(0,0,0,10));
         hBoxStatusBar.getChildren().add(statusBar);
         hBoxStatusBar.getStyleClass().add("statusBar");
+//        new Timeline(new KeyFrame(Duration.millis(1000), ));
         // main panel
         VBox vBox = new VBox();
         vBox.setPadding(Insets.EMPTY);
@@ -114,7 +129,6 @@ public class App extends Application {
         Scene scene = new Scene(vBox);
         scene.getStylesheets().add("styles.css");
         window.onCloseRequestProperty().setValue(e -> {
-            System.out.println("Whataaaa");
             if (runningListenUDP){
                 stopPort();
             }
@@ -123,35 +137,72 @@ public class App extends Application {
         window.show();
     }
 
-    private void statusBarSetText(String text, String codeColor){
-            statusBar.setText(text);
-            if (codeColor.equals("err")){
-                statusBar.setStyle("-fx-text-fill: red");
-            } else {
-                statusBar.setStyle("");
-            }
-    }
+    // запустить в потоке при старте приложения
+//    private void statusBarSetText(String text, String codeColor) {
+//
+////        if (statusBarState[0].getValue() != text) {
+////            statusBarState[0].setValue(text);
+////        }
+////        statusBar.getTextFill();
+////        Platform.runLater(() -> {
+////            statusBar.setText(text);
+////            statusBar.setTextFill(Color.valueOf("0x0000ff"));
+////        });
+//    }
 
     private void listenPort() {
         int port;
         try {
             port = Integer.parseInt(inputPort.getText());
         } catch (NumberFormatException ex){
-            statusBarSetText("Порт должен быть цифрой", "err");
+            statusBar.updateStatus("Порт должен быть целым числом", Paint.valueOf("red"));
             return;
         }
         try {
             socket = new DatagramSocket(port);
         } catch (SocketException e) {
-            statusBarSetText("Порт занят", "err");
+            statusBar.updateStatus("Порт занят", Paint.valueOf("red"));
             return;
         }
+        // сдулать паралельный поток на update statusBar
+        // в функции statusBar проверять если новое состояние statesBar запускать поток
+
         threadListenUDP = new Thread(this::_listenPort);
         threadListenUDP.setName("listenUDP");
         threadListenUDP.setDaemon(true);
         runningListenUDP = true;
+
+//        Task<Integer> task = new Task<Integer>() {
+//            @Override protected Integer call() throws Exception {
+//                int iterations = 0;
+//                for (iterations = 0; iterations < 100000; iterations++) {
+//                    if (isCancelled()) {
+//                        break;
+//                    }
+//                    System.out.println("Iteration " + iterations);
+//                }
+//                return null;
+//            }
+//
+//            @Override protected void succeeded() {
+//                super.succeeded();
+//                updateMessage("Done!");
+//            }
+//
+//            @Override protected void cancelled() {
+//                super.cancelled();
+//                updateMessage("Cancelled!");
+//            }
+//
+//            @Override protected void failed() {
+//                super.failed();
+//                updateMessage("Failed!");
+//            }
+//        };
+
         threadListenUDP.start();
-        statusBarSetText("Прием данных", "");
+//        statusBarSetText("Прием данных", "");
+//        statusBar.updateStatus("Прием данных");
         inputPort.setDisable(true);
     }
 
@@ -159,6 +210,7 @@ public class App extends Application {
         boolean synched = false;
         DatagramPacket packet = new DatagramPacket(buf, buf.length);
         while (runningListenUDP) {
+            statusBar.updateStatus("Прием данных", statusBar.getColorDefault());
             try {
                 socket.receive(packet);
             } catch (IOException e) {
@@ -205,15 +257,86 @@ public class App extends Application {
                 e.printStackTrace();
             }
         }
-        statusBarSetText("Прием данных остановлен", "");
+//        statusBarSetText("Прием данных остановлен", "");
+        statusBar.updateStatusQueue("Прием данных остановлен", statusBar.getColorDefault());
+        statusBar.updateStatusQueue("Готово", statusBar.getColorDefault());
         inputPort.setDisable(false);
     }
 
     private void dropTable() {
         tableList.clear();
-        statusBarSetText("Таблица очищена", "");
-        if (runningListenUDP){
-            statusBarSetText("Прием данных", "");
-        }
+        statusBar.updateStatusQueue("Таблица очищена", statusBar.getColorDefault());
+//        if (runningListenUDP){
+//            statusBarSetText("Прием данных", "");
+//        }
+    }
+}
+
+class StatusBarLabel extends Label {
+    private final SimpleStringProperty statusText;
+    private final SimpleObjectProperty<Paint> statusColor;
+    private final ConcurrentLinkedDeque<StatusBarDto> statusQueue = new ConcurrentLinkedDeque<>();
+    private final Paint colorDefault;
+    private final Timeline timeline;
+
+    public StatusBarLabel (){
+        statusText = new SimpleStringProperty();
+        colorDefault = getTextFill();
+        statusColor = new SimpleObjectProperty<>();
+        // bind
+        textProperty().bind(statusText);
+        textFillProperty().bind(statusColor);
+        // thread
+        timeline = new Timeline(new KeyFrame(Duration.millis(200),
+                actionEvent -> {
+            StatusBarDto last = null;
+            if (statusQueue.size() > 1) {
+                last = statusQueue.remove();
+            } else {
+                last = statusQueue.peek();
+            }
+            statusText.set(last.getText());
+            statusColor.set(last.getColor());
+
+        }));
+        timeline.setCycleCount(Timeline.INDEFINITE);
+        timeline.play();
+    }
+
+    // updQued  stop add que, play
+    // updnow   clear que,stop, play
+
+    public Paint getColorDefault(){
+        return colorDefault;
+    }
+
+    public void updateStatus(String updText, Paint updColor){
+        timeline.stop();
+        statusQueue.clear();
+        statusQueue.add(new StatusBarDto(updText, updColor));
+        timeline.playFromStart();
+    }
+
+    public void updateStatusQueue(String updText, Paint updColor){
+        statusQueue.add(new StatusBarDto(updText, Paint.valueOf("red")));
+        timeline.playFromStart();
+    }
+}
+
+class StatusBarDto{
+    private final String text;
+    private final Paint color;
+
+    public StatusBarDto(String text, Paint color) {
+        this.text = text;
+        this.color = color;
+    }
+
+    public String getText() {
+        return text;
+    }
+
+    public Paint getColor() {
+        return color;
     }
 }

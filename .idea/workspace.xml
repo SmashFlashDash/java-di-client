@@ -1,9 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="7fa4d3ce-e4b4-4007-87ff-11bb4c565410" name="Default Changelist" comment="">
+    <list default="true" id="2b7cb692-1a5e-47fc-af3c-6b9ea6b75b66" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/vniiem-java-test.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/.name" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.name" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/compiler.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/compiler.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/encodings.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/encodings.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/modules.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client-app/client-app.iml" beforeDir="false" afterPath="$PROJECT_DIR$/client-app/client-app.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client-app/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/client-app/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client-app/src/main/java/app/App.java" beforeDir="false" afterPath="$PROJECT_DIR$/client-app/src/main/java/app/App.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client-app/src/main/java/module-info.java" beforeDir="false" afterPath="$PROJECT_DIR$/client-app/src/main/java/module-info.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/interview-vniiem-java.iml" beforeDir="false" afterPath="$PROJECT_DIR$/examples/examples.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/vniiem/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/vniiem/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/vniiem/vniiem.iml" beforeDir="false" afterPath="$PROJECT_DIR$/vniiem/vniiem.iml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -13,15 +26,15 @@
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
-        <option value="module-info" />
         <option value="Class" />
+        <option value="module-info" />
       </list>
     </option>
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
-  <component name="ProjectId" id="2JjIMM7fmwfsc2RowXxGhN3ztzK" />
+  <component name="ProjectId" id="2JoKzco9xymYrHHOMHKG7uN4XOk" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
@@ -39,17 +52,12 @@
     <property name="project.structure.side.proportion" value="0.46551725" />
   </component>
   <component name="RecentsManager">
-    <key name="MoveFile.RECENT_KEYS">
-      <recent name="F:\7Java Projects\test-vnieem-interview\client-app\src\main\resources" />
-      <recent name="F:\7Java Projects\test-vnieem-interview\vniiem\src\main\java" />
-      <recent name="F:\7Java Projects\test-vnieem-interview\vniiem\src" />
-      <recent name="F:\7Java Projects\test-vnieem-interview\src\main\java" />
-      <recent name="F:\7Java Projects\test-vnieem-interview\src\main\java\app" />
+    <key name="CopyClassDialog.RECENTS_KEY">
+      <recent name="appexamples" />
     </key>
   </component>
   <component name="RunAnythingCache">
     <option name="myCommands">
-      <command value="mvn package" />
       <command value="mvn clean install" />
     </option>
   </component>
@@ -59,7 +67,46 @@
       <module name="client-app" />
       <extension name="coverage">
         <pattern>
-          <option name="PATTERN" value="app.*" />
+          <option name="PATTERN" value="appexamples.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="JavaFX_TimerTask" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="appexamples.JavaFX_TimerTask" />
+      <module name="examples" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="appexamples.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="Main" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="app.Main" />
+      <module name="client-app" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="appexamples.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="Mp3Finder" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="appexamples.Mp3Finder" />
+      <module name="examples" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="appexamples.*" />
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
@@ -80,10 +127,20 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
+    <list>
+      <item itemvalue="Application.App" />
+      <item itemvalue="Application.TLMClient" />
+      <item itemvalue="Application.Main" />
+      <item itemvalue="Application.JavaFX_TimerTask" />
+      <item itemvalue="Application.Mp3Finder" />
+    </list>
     <recent_temporary>
       <list>
         <item itemvalue="Application.App" />
         <item itemvalue="Application.TLMClient" />
+        <item itemvalue="Application.Mp3Finder" />
+        <item itemvalue="Application.JavaFX_TimerTask" />
+        <item itemvalue="Application.Main" />
       </list>
     </recent_temporary>
   </component>
@@ -92,15 +149,13 @@
   </component>
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
-      <changelist id="7fa4d3ce-e4b4-4007-87ff-11bb4c565410" name="Default Changelist" comment="" />
-      <created>1672585016507</created>
+      <changelist id="2b7cb692-1a5e-47fc-af3c-6b9ea6b75b66" name="Default Changelist" comment="" />
+      <created>1672739258854</created>
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
-      <updated>1672585016507</updated>
-      <workItem from="1672585020672" duration="5592000" />
-      <workItem from="1672593548514" duration="5397000" />
-      <workItem from="1672600572934" duration="117000" />
-      <workItem from="1672590937522" duration="503000" />
+      <updated>1672739258854</updated>
+      <workItem from="1672739261557" duration="3391000" />
+      <workItem from="1672748479045" duration="14596000" />
     </task>
     <servers />
   </component>
@@ -108,49 +163,90 @@
     <option name="version" value="2" />
   </component>
   <component name="WindowStateProjectService">
-    <state x="416" y="175" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1672591739488">
+    <state x="441" y="95" key="#Project_Structure" timestamp="1672739698978">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state x="416" y="175" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.0.1920.1040@0.0.1920.1040" timestamp="1672591739488" />
-    <state x="792" y="232" key="#com.intellij.openapi.roots.ui.configuration.libraryEditor.LibraryEditorDialog" timestamp="1672593893693">
+    <state x="441" y="95" key="#Project_Structure/0.0.1920.1040@0.0.1920.1040" timestamp="1672739698978" />
+    <state x="416" y="175" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1672748449652">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state x="792" y="232" key="#com.intellij.openapi.roots.ui.configuration.libraryEditor.LibraryEditorDialog/0.0.1920.1040@0.0.1920.1040" timestamp="1672593893693" />
-    <state x="657" y="445" key="#com.intellij.refactoring.move.MoveHandler.SelectRefactoringDialog" timestamp="1672590231952">
+    <state x="416" y="175" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.0.1920.1040@0.0.1920.1040" timestamp="1672748449652" />
+    <state x="766" y="227" key="#com.intellij.ide.util.MemberChooser" timestamp="1672765159968">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state x="657" y="445" key="#com.intellij.refactoring.move.MoveHandler.SelectRefactoringDialog/0.0.1920.1040@0.0.1920.1040" timestamp="1672590231952" />
-    <state x="692" y="276" key="#com.intellij.util.ui.classpath.ChooseLibrariesDialog" timestamp="1672593818951">
+    <state x="766" y="227" key="#com.intellij.ide.util.MemberChooser/0.0.1920.1040@0.0.1920.1040" timestamp="1672765159968" />
+    <state x="896" y="219" width="1024" height="592" key="#xdebugger.evaluate" timestamp="1672761643280">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state x="692" y="276" key="#com.intellij.util.ui.classpath.ChooseLibrariesDialog/0.0.1920.1040@0.0.1920.1040" timestamp="1672593818951" />
-    <state width="1878" height="295" key="GridCell.Tab.0.bottom" timestamp="1672591402541">
+    <state x="896" y="219" width="1024" height="592" key="#xdebugger.evaluate/0.0.1920.1040@0.0.1920.1040" timestamp="1672761643280" />
+    <state width="1878" height="3" key="GridCell.Tab.0.bottom" timestamp="1672765439755">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1878" height="295" key="GridCell.Tab.0.bottom/0.0.1920.1040@0.0.1920.1040" timestamp="1672591402541" />
-    <state width="1878" height="295" key="GridCell.Tab.0.center" timestamp="1672591402541">
+    <state width="1878" height="3" key="GridCell.Tab.0.bottom/0.0.1920.1040@0.0.1920.1040" timestamp="1672765439755" />
+    <state width="1878" height="3" key="GridCell.Tab.0.center" timestamp="1672765439755">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1878" height="295" key="GridCell.Tab.0.center/0.0.1920.1040@0.0.1920.1040" timestamp="1672591402541" />
-    <state width="1878" height="295" key="GridCell.Tab.0.left" timestamp="1672591402541">
+    <state width="1878" height="3" key="GridCell.Tab.0.center/0.0.1920.1040@0.0.1920.1040" timestamp="1672765439755" />
+    <state width="1878" height="3" key="GridCell.Tab.0.left" timestamp="1672765439755">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1878" height="295" key="GridCell.Tab.0.left/0.0.1920.1040@0.0.1920.1040" timestamp="1672591402541" />
-    <state width="1878" height="295" key="GridCell.Tab.0.right" timestamp="1672591402541">
+    <state width="1878" height="3" key="GridCell.Tab.0.left/0.0.1920.1040@0.0.1920.1040" timestamp="1672765439755" />
+    <state width="1878" height="3" key="GridCell.Tab.0.right" timestamp="1672765439755">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1878" height="295" key="GridCell.Tab.0.right/0.0.1920.1040@0.0.1920.1040" timestamp="1672591402541" />
-    <state x="441" y="95" key="SettingsEditor" timestamp="1672594272105">
+    <state width="1878" height="3" key="GridCell.Tab.0.right/0.0.1920.1040@0.0.1920.1040" timestamp="1672765439755" />
+    <state width="1878" height="2" key="GridCell.Tab.1.bottom" timestamp="1672762509655">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state x="441" y="95" key="SettingsEditor/0.0.1920.1040@0.0.1920.1040" timestamp="1672594272105" />
-    <state x="385" y="181" key="new project wizard" timestamp="1672591425371">
+    <state width="1878" height="2" key="GridCell.Tab.1.bottom/0.0.1920.1040@0.0.1920.1040" timestamp="1672762509655" />
+    <state width="1878" height="2" key="GridCell.Tab.1.center" timestamp="1672762509655">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state x="385" y="181" key="new project wizard/0.0.1920.1040@0.0.1920.1040" timestamp="1672591425371" />
-    <state x="637" y="256" width="672" height="677" key="run.anything.popup" timestamp="1672591402526">
+    <state width="1878" height="2" key="GridCell.Tab.1.center/0.0.1920.1040@0.0.1920.1040" timestamp="1672762509655" />
+    <state width="1878" height="2" key="GridCell.Tab.1.left" timestamp="1672762509655">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state x="637" y="256" width="672" height="677" key="run.anything.popup/0.0.1920.1040@0.0.1920.1040" timestamp="1672591402526" />
+    <state width="1878" height="2" key="GridCell.Tab.1.left/0.0.1920.1040@0.0.1920.1040" timestamp="1672762509655" />
+    <state width="1878" height="2" key="GridCell.Tab.1.right" timestamp="1672762509655">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state width="1878" height="2" key="GridCell.Tab.1.right/0.0.1920.1040@0.0.1920.1040" timestamp="1672762509655" />
+    <state x="441" y="95" key="SettingsEditor" timestamp="1672748538451">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state x="441" y="95" key="SettingsEditor/0.0.1920.1040@0.0.1920.1040" timestamp="1672748538451" />
+    <state x="670" y="254" width="579" height="530" key="find.popup" timestamp="1672739567953">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state x="670" y="254" width="579" height="530" key="find.popup/0.0.1920.1040@0.0.1920.1040" timestamp="1672739567953" />
+    <state x="0" y="184" key="new project wizard" timestamp="1672762042295">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state x="0" y="184" key="new project wizard/0.0.1920.1040@0.0.1920.1040" timestamp="1672762042295" />
+    <state x="619" y="242" width="672" height="677" key="run.anything.popup" timestamp="1672739427137">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state x="619" y="242" width="672" height="677" key="run.anything.popup/0.0.1920.1040@0.0.1920.1040" timestamp="1672739427137" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/client-app/src/main/java/app/App.java</url>
+          <line>153</line>
+          <option name="timeStamp" value="3" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/client-app/src/main/java/app/App.java</url>
+          <line>145</line>
+          <option name="timeStamp" value="4" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/client-app/src/main/java/app/App.java</url>
+          <line>284</line>
+          <option name="timeStamp" value="5" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
   </component>
 </project>

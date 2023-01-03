@@ -3,8 +3,9 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/client-app/client-app.iml" filepath="$PROJECT_DIR$/client-app/client-app.iml" />
-      <module fileurl="file://$PROJECT_DIR$/interview-vniiem-java.iml" filepath="$PROJECT_DIR$/interview-vniiem-java.iml" />
+      <module fileurl="file://$PROJECT_DIR$/examples/examples.iml" filepath="$PROJECT_DIR$/examples/examples.iml" />
       <module fileurl="file://$PROJECT_DIR$/vniiem/vniiem.iml" filepath="$PROJECT_DIR$/vniiem/vniiem.iml" />
+      <module fileurl="file://$PROJECT_DIR$/vniiem-java-test.iml" filepath="$PROJECT_DIR$/vniiem-java-test.iml" />
     </modules>
   </component>
 </project>
