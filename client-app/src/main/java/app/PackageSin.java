@@ -25,7 +25,8 @@ public class PackageSin {
         int synch = data.getInt(0);                 // & 0xffffffffL
         counter = data.getInt(4);
         localDateTime = TimeManipulation.getDateTimeFromUnixUTC(data.getDouble(8));
-        angleSin = data.getDouble(16);
+//        angleSin = data.getDouble(16);
+        angleSin = Math.toDegrees(Math.asin(data.getDouble(16)));
         crc16 = data.getShort(data.limit() - 2);   // & 0xffff
 
         validateField(synch, SYNCH);
