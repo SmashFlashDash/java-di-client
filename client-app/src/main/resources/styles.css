@@ -1,18 +1,6 @@
-/*.root{*/
-/*    -fx-background-color:rgb(186,153,122,0.7);*/
-/*    -fx-background-radius:30;*/
-/*}*/
-
-/*.table-view{*/
-/*    -fx-border-color: transparent;*/
-/*}*/
-
-/*.table-view:focused {*/
-/*    outline: none;*/
-/*}*/
-
 .root {
     -fx-base: rgba(60, 60, 60, 255);
+    -style-table-color: #a0a0a0;
 }
 .label{
     -fx-background-color: transparent;
@@ -20,23 +8,26 @@
 .statusBar {
     -fx-background-color: rgba(80, 80, 80, 255);
 }
-
 .table-view{
-    -fx-background-color: transparent;
+    -fx-background-color: -style-table-color;
 }
-.table-cell {
-    -fx-background-color: #a0a0a0;
+.table-cell{
     -fx-text-fill: #000000;
     -fx-alignment: center;
 }
-.table-row-cell {
-    -fx-background-color: 	transparent;
+.table-row-cell{
+    -fx-background-color: transparent;
+    -fx-border-color: transparent;
 }
-.table-row-cell:filled:errors .table-cell {
+.table-row-cell:hover {
+    -fx-background-color: derive(-style-table-color, -20%);
+    -fx-text-background-color: white;
+}
+.table-row-cell:selected .table-cell{
+    -fx-background-color: derive(-style-table-color, -50%);
+    -fx-text-fill: white;
+    -fx-table-cell-border-color: -fx-base;
+}
+.table-row-cell:errors .table-cell {
     -fx-text-fill: #e00000;
-    /*-fx-background-color: gray;*/
 }
-
-/*.table-view .filler {*/
-/*    -fx-border-insets: 10 !* Enter value depending on thickness;*!*/
-/*}*/

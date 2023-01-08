@@ -17,6 +17,7 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.ScrollEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
+import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
@@ -32,6 +33,7 @@ import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.util.Arrays;
 import java.util.List;
+import java.util.stream.IntStream;
 
 public class App extends Application {
     private final byte[] buf = new byte[256];
@@ -53,36 +55,27 @@ public class App extends Application {
         launch(args);
     }
 
-    // TODO: процент ширины на колонки
-    // addListiner autoscroll когда скролл внизу
-    // переделать thread на javaFx Task чтобы управлять gui
     @Override
     public void start(Stage primaryStage) {
         window = primaryStage;
         window.setTitle("get TMI");
-        // NUmberPackage
+        // stolbs
         TableColumn<PackageSin, Integer> idColumn = new TableColumn<>("Номер пакета");
-        idColumn.setMinWidth(10);
-//        idColumn.setPrefWidth(200);
-//        idColumn.setW
         idColumn.setCellValueFactory(new PropertyValueFactory<>("counter"));
-        // DatePackage
         TableColumn<PackageSin, Integer> dateColumn = new TableColumn<>("Время");
-        dateColumn.setMinWidth(10);
         dateColumn.setCellValueFactory(new PropertyValueFactory<>("localDateTime"));
-        // anglePackage
         TableColumn<PackageSin, Integer> angleSinColumn = new TableColumn<>("Угол [гр. \u00B0]");
-        angleSinColumn.setMinWidth(10);
         angleSinColumn.setCellValueFactory(new PropertyValueFactory<>("angleSin"));
-        // crc16
         TableColumn<PackageSin, Integer> crc16Column = new TableColumn<>("CRC16");
-        crc16Column.setMinWidth(10);
         crc16Column.setCellValueFactory(new PropertyValueFactory<>("crc16"));
+        List<TableColumn<PackageSin, Integer>> columns = Arrays.asList(idColumn, dateColumn, angleSinColumn, crc16Column);
+        int[] widths = {80, 150, 150, 80};
+        IntStream.range(0, widths.length).forEach(i -> columns.get(i).setMinWidth(widths[i]));
         // table
         table = new TableView<>();
         table.setFixedCellSize(20);
         table.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
-        table.getColumns().addAll(Arrays.asList(idColumn, dateColumn, angleSinColumn, crc16Column));
+        table.getColumns().addAll(columns);
         tableList = table.getItems();
         final PseudoClass errors = PseudoClass.getPseudoClass("errors");
         table.setRowFactory(tv -> new TableRow<>() {
@@ -92,26 +85,35 @@ public class App extends Application {
                 pseudoClassStateChanged(errors, (item != null) && item.isHaveErrors());
             }
         });
-        // prot field
+        // TODO: установить разную ширину для колонок
+//        idColumn.setResizable(false);
+//        dateColumn.setResizable(false);
+//        angleSinColumn.setResizable(false);
+//        crc16Column.setResizable(false);
+//        idColumn.prefWidthProperty().bind(table.widthProperty().multiply(0.18));
+//        dateColumn.prefWidthProperty().bind(table.widthProperty().multiply(0.4));
+//        angleSinColumn.prefWidthProperty().bind(table.widthProperty().multiply(0.22));
+//        crc16Column.prefWidthProperty().bind(table.widthProperty().multiply(0.2));
+        // prot buttons
         Label lblPort = new Label("Port");
         lblPort.setFont(new Font(20));
         inputPort = new TextField();
         inputPort.setPromptText("Port");
         inputPort.setText("15000");
-        inputPort.setMinWidth(100);
-        // buttons
+        inputPort.setPrefWidth(80);
         startButton = new Button("Start");
         startButton.setOnAction(e -> listenPort());
         stoptButton = new Button("Stop");
         stoptButton.setOnAction(e -> stopPort());
         dropButton = new Button("Drop");
         dropButton.setOnAction(e -> dropTable());
+        List<Control> controls = Arrays.asList(lblPort, inputPort, startButton, stoptButton, dropButton);
         // layout
         HBox hBox = new HBox();
         hBox.setPadding(new Insets(10, 10, 10, 10));
         hBox.setSpacing(10);
         hBox.setAlignment(Pos.CENTER_LEFT);
-        hBox.getChildren().addAll(lblPort, inputPort, startButton, stoptButton, dropButton);
+        hBox.getChildren().addAll(controls);
         // statusBar
         statusBar = new StatusBarLabel();
         statusBar.updateStatus("Готово");
@@ -127,6 +129,8 @@ public class App extends Application {
 
         Scene scene = new Scene(vBox);
         scene.getStylesheets().add("styles.css");
+        window.setMinWidth(80);
+        window.setMinHeight(200);
         window.onCloseRequestProperty().setValue(e -> {
             if (runningListenUDP) {
                 stopPort();
@@ -135,9 +139,7 @@ public class App extends Application {
         window.setScene(scene);
         window.show();
 
-
-        // TODO: вариант установить событие на scroll mouseRelease
-        // autoscroll
+        // TODO: для старых версий javaFx
 //        for (Node node : list.lookupAll(".scroll-bar")) {
 //            if (node instanceof ScrollBar) {
 //                ScrollBar bar = (ScrollBar) node;
@@ -150,13 +152,13 @@ public class App extends Application {
         // этот метод бросает ошибку когд много строк в tableList,
         // т.к. вычисляет координаты скрола по сайзам колонок и их количеству
         // threadTableAutoScroll = new Timeline(new KeyFrame(Duration.millis(1000), e -> {table.scrollTo(tableList.size() - 1);
-        threadTableAutoScroll = new Timeline(new KeyFrame(Duration.millis(200), e -> {tableVs.setValue(1d);
-            System.out.println("скролл завершен");
-        }));
+        threadTableAutoScroll = new Timeline(new KeyFrame(Duration.millis(200), e -> tableVs.setValue(1d)));
         threadTableAutoScroll.setCycleCount(Timeline.INDEFINITE);
         threadTableAutoScroll.play();
+        table.addEventFilter(ScrollEvent.ANY, scrollEvent -> autoScroll());
         tableVs.setOnMouseReleased(e -> autoScroll());
-        tableVs.setOnScroll(e -> autoScroll());
+//        tableVs.setOnScroll(e -> autoScroll());
+
 
         // TODO: второй вариант не запускать timeline поток autoscrol а смещаться только если был доабвлен новый item
 //        tableList.addListener((ListChangeListener<PackageSin>) (ch -> {
@@ -169,10 +171,6 @@ public class App extends Application {
 //                Platform.runLater( () -> table.scrollTo(tableList.size()-1) );
 //            }
 //        }));
-
-        // TODO: установить разную ширину для колонок
-//        idColumn.prefWidthProperty().bind(table.widthProperty().multiply(0.5));
-//        crc16Column.prefWidthProperty().bind(table.widthProperty().multiply(0.5));
     }
 
     private void autoScroll(){
@@ -271,6 +269,8 @@ public class App extends Application {
         statusBar.updateStatus(new StatusBarDto("Таблица очищена", statusBar.DEF));
         if (runningListenUDP) {
             statusBar.updateStatusTimeLine(new StatusBarDto("Прием данных", statusBar.DEF));
+        } else {
+            statusBar.updateStatusTimeLine(new StatusBarDto("Готово", statusBar.DEF));
         }
     }
 }
